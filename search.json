@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "Lightcast — AI-related job postings data (2014–2023)\n\nU.S. Census Bureau\n\nAmerican Community Survey (ACS, 5‑year estimates 2013–2022) for demographics\n\nLocal Area Unemployment Statistics (LAUS, 2013–2023) for employment counts\n\nQuarterly Workforce Indicators (QWI, 2013–2023) for labor turnover\n\nCounty Business Patterns (CBP, 2013–2023) for establishment sizes & industry employment\n\n\nFederal Housing Finance Agency (FHFA) — House Price Index & growth rates (2013–2024)\n\nUSPTO / PatentsView\n\nAll patents & inventor counts, by county\n\nAI-specific patent classification (Giczy et al., 2022)\n\n\nIntegrated Postsecondary Education Data System (IPEDS) — Bachelor’s & master’s degrees awarded per capita"
+  },
+  {
+    "objectID": "sources.html#data-sources",
+    "href": "sources.html#data-sources",
+    "title": "Sources",
+    "section": "",
+    "text": "Lightcast — AI-related job postings data (2014–2023)\n\nU.S. Census Bureau\n\nAmerican Community Survey (ACS, 5‑year estimates 2013–2022) for demographics\n\nLocal Area Unemployment Statistics (LAUS, 2013–2023) for employment counts\n\nQuarterly Workforce Indicators (QWI, 2013–2023) for labor turnover\n\nCounty Business Patterns (CBP, 2013–2023) for establishment sizes & industry employment\n\n\nFederal Housing Finance Agency (FHFA) — House Price Index & growth rates (2013–2024)\n\nUSPTO / PatentsView\n\nAll patents & inventor counts, by county\n\nAI-specific patent classification (Giczy et al., 2022)\n\n\nIntegrated Postsecondary Education Data System (IPEDS) — Bachelor’s & master’s degrees awarded per capita"
+  },
+  {
+    "objectID": "sources.html#code-reproducibility",
+    "href": "sources.html#code-reproducibility",
+    "title": "Sources",
+    "section": "Code & Reproducibility",
+    "text": "Code & Reproducibility\n\nGitHub Repository: https://github.com/JacobKhay/AI-Share-Replication-Differences — all data‐prep, analysis, and Quarto site source\n\nQuarto Site: https://jacobkhay.github.io/AI-Share-Replication-Differences/sources.html"
+  },
+  {
+    "objectID": "sources.html#software-packages",
+    "href": "sources.html#software-packages",
+    "title": "Sources",
+    "section": "Software & Packages",
+    "text": "Software & Packages\n\nR (4.0+) with:\n\ntidyverse, fixest, modelsummary, kableExtra\n\nsf, leaflet, tigris, scales\n\n\nQuarto (Cosmo & Brand themes)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Does County Size Matter? Weighting Effects in AI Job Research",
+    "section": "",
+    "text": "When studying AI job adoption across U.S. counties, should we weight by population or log-population? This analysis uses county-level data from Lightcast job postings, U.S. Census demographics, and USPTO patent records spanning 2014-2023, originally analyzed by Andreadis et al. (2025). I re-estimated their regression models comparing standard population weights against log-population weights to assess whether large metropolitan areas drive the key relationships. Labor market tightness emerges as the most robust predictor of AI adoption across all county sizes, while education effects appear concentrated in large metropolitan areas.\n\n\nThis panel plot displays the coefficient estimates and 95% confidence intervals for seven key predictors across five regression models. Each panel represents a different model from the original paper. Within each panel, two estimates are shown for each variable—one using the authors’ original population weights and one using log(population) weights. This comparison illustrates how model weighting influences the interpretation of each predictor.\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis figure replicates the structure of Figure 1 but focuses on the change in AI employment share from 2014 to 2023. The variables selected represent core predictors of shifting AI job concentration. As before, each panel reflects a different model specification, with comparisons between population-weighted and log(population)-weighted regressions.\n\n\n\n\n\n\n\n\n\n\n\n\nUsing log-population weights instead of the original population weights reveals that several key relationships are driven by large metropolitan areas. Most notably, the bachelor’s degree effect becomes substantially smaller under log-population weighting, while labor market tightness emerges as the most robust predictor across all specifications.\nThis analysis demonstrates that labor market tightness - not just education - is the strongest and most consistent driver of AI job adoption, working across counties of all sizes. The original emphasis on bachelor’s degree attainment may partly reflect the concentration of highly educated workers in large metro areas rather than a generalizable relationship.\nThese findings suggest policymakers should focus on creating tight labor market conditions to encourage AI adoption, rather than assuming education alone will drive technological change in all geographic contexts."
+  },
+  {
+    "objectID": "index.html#figure-1-key-coefficient-estimates-for-ai-share-table-1",
+    "href": "index.html#figure-1-key-coefficient-estimates-for-ai-share-table-1",
+    "title": "Does County Size Matter? Weighting Effects in AI Job Research",
+    "section": "",
+    "text": "This panel plot displays the coefficient estimates and 95% confidence intervals for seven key predictors across five regression models. Each panel represents a different model from the original paper. Within each panel, two estimates are shown for each variable—one using the authors’ original population weights and one using log(population) weights. This comparison illustrates how model weighting influences the interpretation of each predictor."
+  },
+  {
+    "objectID": "index.html#figure-2-key-coefficient-estimates-for-change-in-ai-share-table-2",
+    "href": "index.html#figure-2-key-coefficient-estimates-for-change-in-ai-share-table-2",
+    "title": "Does County Size Matter? Weighting Effects in AI Job Research",
+    "section": "",
+    "text": "This figure replicates the structure of Figure 1 but focuses on the change in AI employment share from 2014 to 2023. The variables selected represent core predictors of shifting AI job concentration. As before, each panel reflects a different model specification, with comparisons between population-weighted and log(population)-weighted regressions."
+  },
+  {
+    "objectID": "index.html#key-finding",
+    "href": "index.html#key-finding",
+    "title": "Does County Size Matter? Weighting Effects in AI Job Research",
+    "section": "",
+    "text": "Using log-population weights instead of the original population weights reveals that several key relationships are driven by large metropolitan areas. Most notably, the bachelor’s degree effect becomes substantially smaller under log-population weighting, while labor market tightness emerges as the most robust predictor across all specifications.\nThis analysis demonstrates that labor market tightness - not just education - is the strongest and most consistent driver of AI job adoption, working across counties of all sizes. The original emphasis on bachelor’s degree attainment may partly reflect the concentration of highly educated workers in large metro areas rather than a generalizable relationship.\nThese findings suggest policymakers should focus on creating tight labor market conditions to encourage AI adoption, rather than assuming education alone will drive technological change in all geographic contexts."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hello! I’m Jacob Khaykin\nI’m a rising senior at Solon High School with a passion for data analysis and its real‑world applications. Currently, I’m exploring data science through dedicated coursework and hands‑on projects.\n\n📧 Email: jacobkhaykin@icloud.com\n💻 GitHub: AI‑shares\n🎓 Bootcamp: David Kane’s Data Science Bootcamp"
+  },
+  {
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "Model",
+    "section": "",
+    "text": "This analysis examines the relationship between county characteristics and AI job intensity using the following specification:\n\\[AI\\_{it} = \\alpha_i + \\gamma_t + \\beta_1 STEM_{i,t-1} + \\beta_2 Tightness_{i,t-1} + \\beta_3 Manufacturing_{i,t-1} + \\beta_4 X_{i,t-1} + \\varepsilon_{it}\\]\nWhere: - \\(AI_{it}\\) is the share of AI-related job postings in county \\(i\\) at time \\(t\\) - \\(\\alpha_i\\) are county fixed effects - \\(\\gamma_t\\) are year fixed effects\n- \\(STEM_{i,t-1}\\) is the lagged share of STEM degrees - \\(Tightness_{i,t-1}\\) is lagged labor market tightness - \\(Manufacturing_{i,t-1}\\) is lagged manufacturing employment share - \\(X_{i,t-1}\\) represents other lagged county characteristics - \\(\\varepsilon_{it}\\) is the error term"
+  },
+  {
+    "objectID": "model.html#data-generating-mechanism",
+    "href": "model.html#data-generating-mechanism",
+    "title": "Model",
+    "section": "",
+    "text": "This analysis examines the relationship between county characteristics and AI job intensity using the following specification:\n\\[AI\\_{it} = \\alpha_i + \\gamma_t + \\beta_1 STEM_{i,t-1} + \\beta_2 Tightness_{i,t-1} + \\beta_3 Manufacturing_{i,t-1} + \\beta_4 X_{i,t-1} + \\varepsilon_{it}\\]\nWhere: - \\(AI_{it}\\) is the share of AI-related job postings in county \\(i\\) at time \\(t\\) - \\(\\alpha_i\\) are county fixed effects - \\(\\gamma_t\\) are year fixed effects\n- \\(STEM_{i,t-1}\\) is the lagged share of STEM degrees - \\(Tightness_{i,t-1}\\) is lagged labor market tightness - \\(Manufacturing_{i,t-1}\\) is lagged manufacturing employment share - \\(X_{i,t-1}\\) represents other lagged county characteristics - \\(\\varepsilon_{it}\\) is the error term"
+  },
+  {
+    "objectID": "model.html#key-modification-population-weighting",
+    "href": "model.html#key-modification-population-weighting",
+    "title": "Model",
+    "section": "Key Modification: Population Weighting",
+    "text": "Key Modification: Population Weighting\nThe critical methodological contribution examines how results change when observations are weighted by log(population):\n\\[w_i = \\log(Population_i)\\]\nThis weighting scheme gives more influence to larger counties in the estimation, potentially changing the interpretation of results from a county-centric view to a population-centric view.\n\n\n# A tibble: 8 × 7\n  term                 estimate std.error statistic   p.value conf.low conf.high\n  &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 Intercept            -1.86e+3   1.35e+2    -13.8  1.13e- 42 -2.12e+3  -1.59e+3\n2 Bachelor's share     -1.35e+3   1.72e+2     -7.88 3.68e- 15 -1.69e+3  -1.02e+3\n3 Labor Tightness       2.83e-2   2.40e-4    118.   0          2.78e-2   2.87e-2\n4 Patents per employee  1.13e+5   6.75e+3     16.8  2.88e- 62  1.00e+5   1.27e+5\n5 STEM share            1.41e+3   3.87e+2      3.64 2.75e-  4  6.50e+2   2.17e+3\n6 Manufacturing inten…  1.03e+3   1.61e+2      6.43 1.37e- 10  7.18e+2   1.35e+3\n7 ICT intensity         2.77e+4   1.07e+3     25.8  7.87e-141  2.56e+4   2.98e+4\n8 Turnover rate         1.18e+4   1.20e+3      9.84 1.00e- 22  9.46e+3   1.42e+4"
+  }
+]
