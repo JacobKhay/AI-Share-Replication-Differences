@@ -1,0 +1,73 @@
+---
+title: "Model"
+format: html
+execute:
+    echo: false
+    warning: false
+    message: false
+---
+
+## Data Generating Mechanism
+
+This analysis examines the relationship between county characteristics and AI job intensity using the following specification:
+
+$$AI\_{it} = \alpha_i + \gamma_t + \beta_1 STEM_{i,t-1} + \beta_2 Tightness_{i,t-1} + \beta_3 Manufacturing_{i,t-1} + \beta_4 X_{i,t-1} + \varepsilon_{it}$$
+
+Where:
+- $AI_{it}$ is the share of AI-related job postings in county $i$ at time $t$
+- $\alpha_i$ are county fixed effects
+- $\gamma_t$ are year fixed effects  
+- $STEM_{i,t-1}$ is the lagged share of STEM degrees
+- $Tightness_{i,t-1}$ is lagged labor market tightness
+- $Manufacturing_{i,t-1}$ is lagged manufacturing employment share
+- $X_{i,t-1}$ represents other lagged county characteristics
+- $\varepsilon_{it}$ is the error term
+
+## Key Modification: Population Weighting
+
+The critical methodological contribution examines how results change when observations are weighted by log(population):
+
+$$w_i = \log(Population_i)$$
+
+This weighting scheme gives more influence to larger counties in the estimation, potentially changing the interpretation of results from a county-centric view to a population-centric view.
+
+```{r}
+library(readr)
+library(dplyr)
+library(broom)
+
+# Load data
+df <- read_csv("data.csv")
+
+# Create derived variables
+df <- df |>
+  mutate(
+    patents_per_emp = n_patents / emp,
+    stem_share = (ustemdeg + mstemdeg) / (udeg + mdeg),
+    manuf_intensity = manuf_emp / emp,
+    ict_intensity = information_emp / emp
+  )
+
+# Fit the model
+fitted_model <- lm(ai ~ share_bac + nads + patents_per_emp +
+                     stem_share + manuf_intensity + ict_intensity + TurnOvrS,
+                   data = df)
+
+# Tidy results with confidence intervals
+model <- tidy(fitted_model, conf.int = TRUE) |>
+  mutate(term = recode(term,
+    `(Intercept)`       = "Intercept",
+    share_bac           = "Bachelor's share",
+    nads                = "Labor Tightness",
+    patents_per_emp     = "Patents per employee",
+    stem_share          = "STEM share",
+    manuf_intensity     = "Manufacturing intensity",
+    ict_intensity       = "ICT intensity",
+    TurnOvrS            = "Turnover rate"
+  ))
+
+# Show cleaned model table
+model
+
+```
+

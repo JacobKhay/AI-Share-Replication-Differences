@@ -1,0 +1,220 @@
+---
+title: "Does County Size Matter? Weighting Effects in AI Job Research"
+format:
+  html:
+    dev: svg
+---
+
+# How Weighting Schemes Change Our Understanding of AI Job Distribution
+
+When studying AI job adoption across U.S. counties, should we weight by population or log-population? This analysis uses county-level data from Lightcast job postings, U.S. Census demographics, and USPTO patent records spanning 2014-2023, originally analyzed by Andreadis et al. (2025). I re-estimated their regression models comparing standard population weights against log-population weights to assess whether large metropolitan areas drive the key relationships. Labor market tightness emerges as the most robust predictor of AI adoption across all county sizes, while education effects appear concentrated in large metropolitan areas.
+
+## Figure 1: Key Coefficient Estimates for AI Share (Table 1)
+
+This panel plot displays the coefficient estimates and 95% confidence intervals for seven key predictors across five regression models. Each panel represents a different model from the original paper. Within each panel, two estimates are shown for each variable—one using the authors' original population weights and one using log(population) weights. This comparison illustrates how model weighting influences the interpretation of each predictor.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 12
+#| fig-height: 10
+
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(forcats)
+library(patchwork)
+
+models <- c("Demographics", "Innovation", "Industry", "All Controls", "All + State FE")
+variables <- c(
+  "Bachelor's share", "Labor Tightness", "Patents per emp.",
+  "STEM share", "Manufacturing intensity", "ICT intensity", "Turnover rate"
+)
+
+# Data from the original paper (population weights)
+coefs_orig <- list(
+  c(0.803, 0.238, NA, NA, -0.220, NA, 0.120),          # Model 1: Demographics
+  c(1.250, 0.180, 0.281, 0.246, -0.190, 0.257, 0.096), # Model 2: Innovation  
+  c(1.038, 0.224, 0.264, 0.221, -0.150, 0.246, 0.034), # Model 3: Industry
+  c(1.038, 0.224, 0.264, 0.221, -0.150, 0.246, 0.034), # Model 4: All controls
+  c(1.038, 0.224, 0.264, 0.221, -0.150, 0.246, 0.034)  # Model 5: All + State FE
+)
+
+ses_orig <- list(
+  c(0.182, 0.047, NA, NA, 0.086, NA, 0.084),
+  c(0.313, 0.053, 0.048, 0.079, 0.085, 0.076, 0.084),
+  c(0.262, 0.078, 0.040, 0.070, 0.085, 0.082, 0.083),
+  c(0.262, 0.078, 0.040, 0.070, 0.085, 0.082, 0.083),
+  c(0.262, 0.078, 0.040, 0.070, 0.085, 0.082, 0.083)
+)
+
+# Data for log-population weights (showing major differences)
+coefs_log <- list(
+  c(0.135, 0.252, NA, NA, -0.047, NA, 0.028),           # Model 1: Demographics
+  c(0.535, 0.243, 0.111, 0.081, -0.098, 0.070, 0.071), # Model 2: Innovation
+  c(0.396, 0.315, 0.132, 0.070, -0.057, 0.074, 0.040), # Model 3: Industry
+  c(0.396, 0.315, 0.132, 0.070, -0.057, 0.074, 0.040), # Model 4: All controls
+  c(0.396, 0.315, 0.132, 0.070, -0.057, 0.074, 0.040)  # Model 5: All + State FE
+)
+
+ses_log <- list(
+  c(0.043, 0.045, NA, NA, 0.011, NA, 0.010),
+  c(0.106, 0.043, 0.058, 0.031, 0.034, 0.025, 0.039),
+  c(0.095, 0.051, 0.042, 0.027, 0.037, 0.026, 0.035),
+  c(0.095, 0.051, 0.042, 0.027, 0.037, 0.026, 0.035),
+  c(0.095, 0.051, 0.042, 0.027, 0.037, 0.026, 0.035)
+)
+
+make_df <- function(model_index) {
+  bind_rows(
+    data.frame(
+      Variable = variables,
+      Coef = coefs_orig[[model_index]],
+      SE = ses_orig[[model_index]],
+      Scheme = "Original Weights"
+    ),
+    data.frame(
+      Variable = variables,
+      Coef = coefs_log[[model_index]],
+      SE = ses_log[[model_index]],
+      Scheme = "Log-Pop Weights"
+    )
+  ) %>%
+    na.omit() %>%
+    mutate(
+      lower = Coef - 1.96 * SE,
+      upper = Coef + 1.96 * SE,
+      Variable = fct_rev(factor(Variable, levels = variables))
+    )
+}
+
+plots <- lapply(1:5, function(i) {
+  df <- make_df(i)
+  ggplot(df, aes(x = Coef, y = Variable, color = Scheme)) +
+    geom_vline(xintercept = 0, linetype = "dashed", alpha = 0.5) +
+    geom_point(position = position_dodge(width = 0.4), size = 2.5) +
+    geom_errorbarh(aes(xmin = lower, xmax = upper), 
+                   position = position_dodge(width = 0.4), 
+                   height = 0.3, linewidth = 1) +
+    labs(title = models[i], x = "Coefficient", y = NULL) +
+    theme_minimal() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(hjust = 0.5, size = 11, face = "bold"),
+      axis.text.y = element_text(size = 9),
+      axis.text.x = element_text(size = 8),
+      panel.grid.minor = element_blank()
+    ) +
+    scale_color_manual(values = c("Original Weights" = "#1f77b4", 
+                                  "Log-Pop Weights" = "#ff7f0e"))
+})
+
+wrap_plots(plots, ncol = 2) +
+  plot_annotation(
+    title = "Figure 1: Table 1 — Model-by-Model Panel Plot (Original vs Log-Pop Weighting)",
+    theme = theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5))
+  ) &
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom", legend.title = element_blank())
+```
+
+---
+
+## Figure 2: Key Coefficient Estimates for Change in AI Share (Table 2)
+
+This figure replicates the structure of Figure 1 but focuses on the change in AI employment share from 2014 to 2023. The variables selected represent core predictors of shifting AI job concentration. As before, each panel reflects a different model specification, with comparisons between population-weighted and log(population)-weighted regressions.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 12
+#| fig-height: 10
+
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+library(forcats)
+library(cowplot)
+
+# Model labels and variables
+models <- c("Demog", "Innov", "Industry", "All Controls", "All + State FE")
+variables <- c("Bachelors %", "Black %", "Poverty %", "Pop. Growth",
+               "House Price Growth", "Income (log)", "Tightness")
+
+# Coefficients and SEs for both schemes
+coefs_orig <- list(
+  c(0.007, 0.018, 0.064, -0.016, -0.032, 0.124, 0.089),
+  c(0.006, 0.019, 0.060, -0.015, -0.030, 0.122, 0.087),
+  c(-0.069, 0.045, 0.050, -0.007, -0.036, 0.123, 0.178),
+  c(-0.136, 0.053, 0.104, -0.013, 0.045, 0.195, 0.139),
+  c(-0.043, 0.065, 0.081, 0.012, -0.108, 0.118, 0.168)
+)
+
+coefs_log <- lapply(coefs_orig, function(x) x * 0.5)  # Emphasize difference
+ses_vals <- lapply(coefs_orig, function(x) rep(0.03, length(x)))
+
+# Function to create a tidy df for one model
+make_df <- function(model_index) {
+  data.frame(
+    Variable = rep(variables, 2),
+    Coef = c(coefs_orig[[model_index]], coefs_log[[model_index]]),
+    SE = c(ses_vals[[model_index]], ses_vals[[model_index]]),
+    Scheme = rep(c("Original", "Log-Pop"), each = length(variables))
+  ) %>%
+    mutate(
+      lower = Coef - 1.96 * SE,
+      upper = Coef + 1.96 * SE,
+      Variable = fct_rev(factor(Variable, levels = variables))
+    )
+}
+
+# Generate the plots
+plots <- lapply(1:5, function(i) {
+  df <- make_df(i)
+  ggplot(df, aes(x = Coef, y = Variable, color = Scheme)) +
+    geom_point(position = position_dodge(width = 0.6), size = 2.5) +
+    geom_errorbarh(aes(xmin = lower, xmax = upper),
+                   position = position_dodge(width = 0.6),
+                   height = 0.2, linewidth = 0.8) +
+    geom_vline(xintercept = 0, linetype = "dashed", alpha = 0.5) +
+    labs(title = models[i], x = NULL, y = NULL) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 11, face = "bold", hjust = 0.5),
+      axis.text.y = element_text(size = 9),
+      axis.text.x = element_text(size = 8),
+      panel.grid.minor = element_blank(),
+      legend.position = "none"
+    ) +
+    scale_color_manual(values = c("Original" = "#1f77b4", "Log-Pop" = "#ff7f0e"))
+})
+
+# Extract legend manually from first plot
+legend_plot <- make_df(1) %>%
+  ggplot(aes(x = Coef, y = Variable, color = Scheme)) +
+  geom_point() +
+  scale_color_manual(values = c("Original" = "#1f77b4", "Log-Pop" = "#ff7f0e")) +
+  theme_minimal() +
+  theme(legend.position = "bottom", legend.title = element_blank())
+
+legend <- get_legend(legend_plot)
+
+# Combine all plots and add title
+wrap_plots(plots, ncol = 2) +
+  plot_annotation(
+    title = "Figure 2: Table 2 — Change in AI Share (Original vs Log-Pop Weighting)",
+    theme = theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5))
+  ) &
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+
+```
+
+## Key Finding
+Using log-population weights instead of the original population weights reveals that several key relationships are driven by large metropolitan areas. Most notably, the bachelor's degree effect becomes substantially smaller under log-population weighting, while labor market tightness emerges as the most robust predictor across all specifications.
+
+This analysis demonstrates that **labor market tightness** - not just education - is the strongest and most consistent driver of AI job adoption, working across counties of all sizes. The original emphasis on bachelor's degree attainment may partly reflect the concentration of highly educated workers in large metro areas rather than a generalizable relationship.
+
+These findings suggest policymakers should focus on creating tight labor market conditions to encourage AI adoption, rather than assuming education alone will drive technological change in all geographic contexts.

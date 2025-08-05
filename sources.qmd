@@ -1,0 +1,31 @@
+---
+title: "Sources"
+format: html
+---
+
+## Data Sources
+
+- **Lightcast** — AI-related job postings data (2014–2023)  
+- **U.S. Census Bureau**  
+  - American Community Survey (ACS, 5‑year estimates 2013–2022) for demographics  
+  - Local Area Unemployment Statistics (LAUS, 2013–2023) for employment counts  
+  - Quarterly Workforce Indicators (QWI, 2013–2023) for labor turnover  
+  - County Business Patterns (CBP, 2013–2023) for establishment sizes & industry employment  
+- **Federal Housing Finance Agency (FHFA)** — House Price Index & growth rates (2013–2024)  
+- **USPTO / PatentsView**  
+  - All patents & inventor counts, by county  
+  - AI-specific patent classification (Giczy et al., 2022)  
+- **Integrated Postsecondary Education Data System (IPEDS)** — Bachelor’s & master’s degrees awarded per capita  
+
+## Code & Reproducibility
+
+- **GitHub Repository**: <https://github.com/JacobKhay/AI-Share-Replication-Differences> — all data‐prep, analysis, and Quarto site source  
+- **Quarto Site**: https://jacobkhay.github.io/AI-Share-Replication-Differences/sources.html
+
+## Software & Packages
+
+- **R** (4.0+) with:  
+  - tidyverse, fixest, modelsummary, kableExtra  
+  - sf, leaflet, tigris, scales  
+- **Quarto** (Cosmo & Brand themes)  
+
